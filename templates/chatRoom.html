@@ -1,0 +1,113 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+<section class="gradient-custom mt-5">
+  <div class="container col-lg-6">
+      <div class="container" id="refreshed_content" data-host-id="{{ host.id }}" data-room-id="{{ room.id }}" data-client-id="{{ current_user.id }}" style="overflow-y: auto;">
+        <ul class="list-unstyled message-container rounded-6 time" style="background: rgba(255, 255, 255, 0.3); padding: 20px;" id="chat-messages">
+          {% for message in room.messages %}
+          {% if message.sender == current_user %}
+          <li class="d-flex justify-content-between mb-4">
+            {% if message.sender.image %}
+            <img src="data:{{ message.sender.image_mimetype }};base64,{{ b64encode(message.sender.image).decode('utf-8') }}" class="rounded-circle msg-image">
+            {% else %}
+            <img src="{{ url_for('static', filename='image/anomyous.jpg') }}" class="rounded-circle msg-image">
+            {% endif %}
+            <div class="cc mask-custom">
+              <div class="card-header d-flex justify-content-between p-0"
+                style="border-bottom: 1px solid rgba(255,255,255,.3); width: 200px;">
+                <p class="fw-bold mb-0" style="margin-right: 5px;">{{ message.sender.name }} </p>
+                <p class="text-dark small mb-0" style="font-size: 9px; margin-top: 6px;"><i class="far fa-clock"></i> {{ message.date.strftime("%Y-%m-%d %H:%M") }}</p><a href="{{url_for('delete_message', num=message.id, kar=current_user.id, kal=host.id)}}"><button type="button" class="btn btn-danger p-1" style="font-size: 7px; margin-left: 5px;" data-mdb-ripple-init>delete</button></a>
+              </div>
+              <div class="card-body">
+                <p class="mb-0">
+                  {{ message.text }}
+                </p>
+              </div>
+            </div>
+          </li>
+          {% else %}
+          <li class="d-flex justify-content-between mb-4">
+            <div class="cc mask-custom">
+              <div class="card-header d-flex justify-content-between p-0"
+                style="border-bottom: 1px solid rgba(255,255,255,.3); width: 200px;">
+                <p class="fw-bold mb-0" style="margin-right: 5px;">{{ message.sender.name }} </p>
+                <p class="text-dark small mb-0" style="font-size: 9px; margin-top: 6px;"><i class="far fa-clock"></i> {{ message.date.strftime("%Y-%m-%d %H:%M") }}</p>
+              </div>
+              <div class="card-body">
+                <p class="mb-0">
+                  {{ message.text }}
+                </p>
+              </div>
+            </div>
+            {% if message.sender.image %}
+            <img src="data:{{ message.sender.image_mimetype }};base64,{{ b64encode(message.sender.image).decode('utf-8') }}" class="rounded-circle msg-image">
+            {% else %}
+            <img src="{{ url_for('static', filename='image/anomyous.jpg') }}" class="rounded-circle msg-image">
+            {% endif %}
+          </li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+
+      </div>
+      <form method="post">
+                  <div data-mdb-input-init class="form-outline form-white">
+                      <textarea class="form-control" id="textAreaExample3" autocomplete="off" name="xmsg" rows="1"></textarea>
+                      <label class="form-label" for="textAreaExample3">Message</label>
+                  </div>
+                 <button type="submit" class="btn btn-light btn-lg btn-rounded float-end my-3">Send</button>
+      </form>
+  </div>
+
+</section>
+<script>
+  let roomId = $('#refreshed_content').data('room-id');
+  let hostId = $('#refreshed_content').data('host-id');
+  let clientId = $('#refreshed_content').data('client-id');
+    $(document).ready(function(){
+    function refreshContent() {
+      roomId = $('#refreshed_content').data('room-id');
+      hostId = $('#refreshed_content').data('host-id');
+      clientId = $('#refreshed_content').data('client-id');
+        $.ajax({
+            url: "/get_content/" + roomId,
+            type: "GET",
+            success: function(response) {
+                $('#refreshed_content').html(response);
+                setTimeout(function() {
+                    $('#chat-messages').scrollTop($('#chat-messages')[0].scrollHeight);
+                }, 0);
+
+            },
+            error: function(xhr) {
+                // Handle error
+                console.log(xhr.responseText);
+            }
+        });
+    }
+        const socket = io({autoConnect: false});
+
+            let username = "test";
+
+            socket.connect();
+
+            socket.on("connect", function() {
+                socket.emit("user_join", username);
+            })
+
+        socket.on("chat", function(data) {
+          if ((data["clientID"] === hostId.toString() && data["hostID"] === clientId.toString()) || (data["hostID"] === hostId.toString() && data["clientID"] === clientId.toString()))
+          {
+            refreshContent();
+          }
+        })
+});
+    function scrollToBottom() {
+      var messageContainer = document.getElementById("chat-messages");
+      messageContainer.scrollTop = messageContainer.scrollHeight * 10;
+    }
+ scrollToBottom();
+</script>
+{% endblock %}

@@ -1,0 +1,59 @@
+<body class="d-flex flex-column min-vh-100">
+  <nav style="z-index: 1000;" class="d-flex align-items-center height-navbar">
+    <ul class="sidebar mb-0 p-0">
+      <li onclick=hideSidebar()><a href="#"><svg xmlns="http://www.w3.org/2000/svg" height="26" viewBox="0 96 960 960" width="26"><path d="m249 849-42-42 231-231-231-231 42-42 231 231 231-231 42 42-231 231 231 231-42 42-231-231-231 231Z"/></svg></a></li>
+      <li><a href="{{ url_for('index_page') }}">Główna</a></li>
+      {% if current_user.is_authenticated %}
+      <li><a href="{{ url_for('find_chat_page') }}">Chat</a></li>
+      <li><a href="{{ url_for('add_user_page') }}">Znajdź użytkownika</a></li>
+      <li><a href="{{ url_for('logout') }}">Wyloguj</a></li>
+      <li>
+        <a
+          data-mdb-dropdown-init
+
+          href="#"
+          id="navbarDropdownMenuLink"
+          role="button"
+          aria-expanded="false"
+        >
+          Edite profile
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" style="height: auto; width: auto;">
+          <li>
+            <a class="dropdown-item text-center d-flex justify-content-center align-items-center" href="{{ url_for('edit_profile_page') }}">Edite profile's information</a>
+          </li>
+        </ul>
+      </li>
+      {% else %}
+      <li><a href="{{ url_for('login_page') }}">Zaloguj</a></li>
+      <li class="hideOnMobile"><a href="{{ url_for('register') }}">Zarejestruj się</a></li>
+      {% endif %}
+    </ul>
+    <ul class="mb-0">
+      <li class="hideOnMobile"><a href="{{ url_for('index_page') }}">Główna</a></li>
+      {% if current_user.is_authenticated %}
+      <li class="hideOnMobile"><a href="{{ url_for('find_chat_page') }}">Chat</a></li>
+      <li class="hideOnMobile"><a href="{{ url_for('add_user_page') }}">Znajdź użytkownika</a></li>
+      <li class="hideOnMobile"><a href="{{ url_for('logout') }}">Wyloguj</a></li>
+      <li class="hideOnMobile align-items-center justify-content-center">
+        <a class="justify-content-center align-items-center"
+          data-mdb-dropdown-init
+          href="#"
+          role="button"
+          aria-expanded="false"
+        >
+          Edytuj
+        </a>
+        <ul class="hideOnMobile dropdown-menu align-items-center justify-content-center" style="height: auto; width: auto;" aria-labelledby="navbarDropdownMenuLink">
+          <li class="align-items-center justify-content-center text-center" style="height: 40px;">
+            <a class="dropdown-item d-flex text-center align-items-center justify-content-center" style="vertical-align: middle;" href="{{ url_for('edit_profile_page') }}">Edytuj to</a>
+          </li>
+        </ul>
+      </li>
+      {% else %}
+      <li class="hideOnMobile"><a href="{{ url_for('login_page') }}">Zaloguj</a></li>
+      <li class="hideOnMobile"><a href="{{ url_for('register') }}">Zarejestruj się</a></li>
+      {% endif %}
+      <li class="menu-button" onclick=showSidebar()><a href="#"><svg xmlns="http://www.w3.org/2000/svg" height="26" viewBox="0 96 960 960" width="26"><path d="M120 816v-60h720v60H120Zm0-210v-60h720v60H120Zm0-210v-60h720v60H120Z"/></svg></a></li>
+    </ul>
+  </nav>

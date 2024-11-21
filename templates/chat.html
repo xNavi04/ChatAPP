@@ -1,0 +1,31 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row justify-content-center">
+        {% for room in rooms %}
+        {% for participant in room.participants %}
+        {% if participant != current_user %}
+         <div class="card col-lg-3 align-items-center py-2 rounded-6 px-1 mt-3 mx-4" style="background: rgba(255, 255, 255, 0.3); width: 230px;">
+          {% if participant.image %}
+          <img src="data:{{ participant.image_mimetype }};base64,{{ b64encode(participant.image).decode('utf-8') }}" class="equal-sized-image rounded-6 mt-1" alt="Fissure in Sandstone"/>
+          {% else %}
+          <img src="{{ url_for('static', filename='image/anomyous.jpg') }}" class="equal-sized-image rounded-6 mt-1" alt="Fissure in Sandstone"/>
+          {% endif %}
+          <div class="card-body py-1" style="width: 240px;">
+            <h5 class="card-title text-center">{{participant.name}}</h5>
+            <div class="row justify-content-center">
+                    <a href="{{ url_for('chat_page', num=participant.id) }}" class="btn btn-primary col-lg-5" style="margin-right: 4px; max-width: 100px;" data-mdb-ripple-init>Write</a>
+                    <a href="{{ url_for('delete_room', num=participant.id) }}" class="btn btn-danger col-lg-5" style="margin-right: 4px; max-width: 100px;" data-mdb-ripple-init>Delete</a>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
+

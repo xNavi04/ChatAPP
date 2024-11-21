@@ -1,0 +1,47 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<section class="vh-100 gradient-custom">
+  <div class="container py-0 h-100">
+    <div class="row d-flex justify-content-center mt-5 h-100">
+      <div class="col-12 col-md-8 col-lg-6 col-xl-5 login-margin">
+        <div class="bg-dark text-white" style="border-radius: 1rem;">
+          <div class="card-body p-5 text-center">
+            <div class="mb-md-5 mt-md-4 pb-5">
+              <h2 class="fw-bold mb-2 text-uppercase">Rejestracja</h2>
+              <p class="text-white-50 mb-5">Zarejestruj się</p>
+              <form method="post">
+                <div data-mdb-input-init="" class="form-outline form-white mb-4" data-mdb-input-initialized="true">
+                <input id="typeNameX" name="username" class="form-control form-control-lg">
+                <label class="form-label" for="typeNamex" style="margin-left: 0px;">Nazwa użytkownika</label>
+              <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 66.4px;"></div><div class="form-notch-trailing"></div></div></div>
+              <div data-mdb-input-init="" class="form-outline form-white mb-4" data-mdb-input-initialized="true">
+                <input type="password" name="password" id="typePasswordX" class="form-control form-control-lg">
+                <label class="form-label" for="typePasswordX" style="margin-left: 0px;">Password</label>
+              <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 64.8px;"></div><div class="form-notch-trailing"></div></div></div>
+                  <div data-mdb-input-init="" class="form-outline form-white mb-4" data-mdb-input-initialized="true">
+                <input type="password" name="confirmPassword" class="form-control form-control-lg">
+                <label class="form-label" for="typePasswordX" style="margin-left: 0px;">Password</label>
+              <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 64.8px;"></div><div class="form-notch-trailing"></div></div></div>
+              <button class="btn btn-outline-light btn-lg px-5" type="submit" data-mdb-button-initialized="true">Login</button>
+              </form>
+            </div>
+              {% for alert in alerts %}
+
+              <div class="p-3 mb-2 bg-gradient text-white rounded-5 mt-3" style="background: rgba(255, 255, 255, 0.4)">
+                {{alert}}
+              </div>
+
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+{% endblock %}
+
